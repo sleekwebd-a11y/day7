@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>FateBet • Let Destiny Decide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-neutral-950 text-white font-sans min-h-screen overflow-x-hidden">
+
+  <div class="max-w-[420px] mx-auto bg-neutral-950 min-h-screen flex flex-col shadow-2xl relative">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-br from-red-900 via-rose-800 to-purple-900 px-6 pt-12 pb-10 text-center">
+      <h1 class="text-5xl font-bold tracking-tight" style="font-family: 'Space Grotesk', sans-serif;">FateBet</h1>
+      <p class="mt-2 text-rose-200 text-lg font-medium">You don't choose. Fate does.</p>
+      <p class="mt-3 text-sm text-rose-300/80">Enter bankroll → watch destiny spin your stake</p>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 px-5 pt-6 pb-32 overflow-y-auto">
+
+      <!-- Bankroll + Spin Button -->
+      <section class="bg-neutral-900 rounded-3xl p-7 mb-8 border border-rose-900/40 shadow-inner">
+        <label class="block text-sm font-medium text-neutral-400 mb-3">Your Gambling Money</label>
+        <div class="relative">
+          <span class="absolute left-5 top-1/2 -translate-y-1/2 text-2xl text-neutral-500">$</span>
+          <input id="bankroll" type="number" min="0" step="1"
+                 class="w-full bg-neutral-800 border border-neutral-700 focus:border-rose-600 rounded-2xl pl-12 pr-6 py-5 text-4xl font-semibold text-center outline-none tabular-nums"
+                 placeholder="0" autofocus>
+        </div>
+
+        <button onclick="spinFate()"
+                class="mt-8 w-full py-6 bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 rounded-2xl text-2xl font-bold shadow-xl transition active:scale-95">
+          SPIN MY FATE 🎰
+        </button>
+
+        <div class="mt-10 text-center">
+          <p class="text-sm text-neutral-400 mb-2">Fate says you should risk...</p>
+          <div id="slot-display" class="relative h-24 overflow-hidden rounded-xl bg-black/40 border border-rose-700/50 flex items-center justify-center">
+            <div id="spinning-numbers" class="text-6xl font-black tabular-nums text-rose-400 opacity-0 transition-opacity duration-300">$0</div>
+            <div id="slot-overlay" class="absolute inset-0 bg-gradient-to-b from-transparent via-rose-900/30 to-transparent pointer-events-none"></div>
+          </div>
+          <p id="risk-show" class="mt-3 text-xl text-neutral-300">(??% of your soul)</p>
+        </div>
+      </section>
+
+      <!-- Log Win/Loss -->
+      <section class="bg-neutral-900 rounded-3xl p-7 mb-8 border border-neutral-800">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Log What Actually Happened</h2>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <button onclick="logResult('win')" 
+                  class="py-6 bg-emerald-700/70 hover:bg-emerald-600 rounded-2xl text-xl font-bold transition active:scale-95">
+            + I WON
+          </button>
+          <button onclick="logResult('loss')" 
+                  class="py-6 bg-rose-700/70 hover:bg-rose-600 rounded-2xl text-xl font-bold transition active:scale-95">
+            − I LOST
+          </button>
+        </div>
+
+        <input id="amount-log" type="number" min="0" step="0.01"
+               class="w-full bg-neutral-800 border border-neutral-700 focus:border-emerald-500 rounded-2xl px-5 py-4 text-xl outline-none mb-4"
+               placeholder="Amount ($ won or lost)">
+
+        <textarea id="note" rows="2"
+                  class="w-full bg-neutral-800 border border-neutral-700 focus:border-violet-500 rounded-2xl p-4 text-base placeholder:text-neutral-500 outline-none resize-none"
+                  placeholder="Optional: what game? how it felt?"></textarea>
+      </section>
+
+      <!-- History -->
+      <section>
+        <h2 class="text-xl font-semibold mb-5">Chaos History</h2>
+        <div id="history-list" class="space-y-3">
+          <!-- JS -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Bar -->
+    <div class="fixed bottom-0 left-1/2 -translate-x-1/2 max-w-[420px] w-full bg-neutral-900/90 backdrop-blur-xl border-t border-neutral-800 z-50">
+      <div class="grid grid-cols-3 py-4 px-6 text-center text-sm">
+        <div>
+          <p id="current-bankroll" class="text-2xl font-bold text-emerald-400">$0</p>
+          <p class="text-neutral-500 text-xs mt-1">Bankroll</p>
+        </div>
+        <div>
+          <p id="total-wins" class="text-2xl font-bold text-emerald-400">0</p>
+          <p class="text-neutral-500 text-xs mt-1">Wins</p>
+        </div>
+        <div>
+          <p id="total-losses" class="text-2xl font-bold text-rose-400">0</p>
+          <p class="text-neutral-500 text-xs mt-1">Losses</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-28 left-1/2 -translate-x-1/2 bg-neutral-800/90 text-white px-8 py-4 rounded-3xl shadow-2xl z-[100] text-center">
+      <span id="toast-text"></span>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
